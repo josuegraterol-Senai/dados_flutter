@@ -5,23 +5,28 @@ import 'package:flutter/material.dart';
 
 //1. Estrutura base do app
 //a funcao principal que inicia o app
-
-void main() => (const AplicativoJogodeDados(),);
+void main() => runApp(
+  const AplicativoJogodeDados()
+  );
 
 //Raiz (base) do app. Definir o tema e o fluxo inicial
 class AplicativoJogodeDados extends StatelessWidget {
   const AplicativoJogodeDados({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     //fazer um return do MaterialApp, que da o visual ao projeto
     return MaterialApp(
       title: 'Jogo de dados', //titulo que aparece no gerenciador
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue
+      ),
       home: const TelaConfiguracaoJogadores(),
     );
   }
 }
+
 // 2.  TELA DO CONFIGURAÇÃO DE JOGADORES
   //Primeira tela do app. Coletar os nomes dos jogadores
   class TelaConfiguracaoJogadores extends StatefulWidget{
@@ -93,7 +98,8 @@ class _EstadoTelafConfiguracoesJogadores extends State<TelaConfiguracaoJogadores
                 //Botão de largura total
                 child: const Text("Inicial Jogo"),
               )
-            ] ,), 
+            ],
+            ), 
         ),
          ),
     );
@@ -116,5 +122,64 @@ class TelaJogodeDados extends StatefulWidget{
   });
 
   @override
+  //Ei tio flutter, quando essa tela for criada, use essa classe chamada _EstadoTelaJogoDeDados
+  //para guardar e controlar o estado dela
+  //ESTADOTELAJOGODEDADOS e o cerebro do robo que guarda o que esta acontecendo.
+  //o createstate e o botão que coloca o cerebro dentro do robô
   State<TelaJogodeDados> createState() => _EstadoTelaJogoDeDados();
+}
+
+class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
+  //Lista dos 3 valores de cada jogador.
+  final Random _aleaotorio = Random(); //gerador de números aleatórios
+  List<int> _lancamentosJogador1 = [1,1,1];
+  List<int> _lancamentosJogador2 = [1,1,1];
+  String _mensagemResultado = ''; //Mensagem de resultado da rodada.
+
+  //Mapear as associações do número dado referente ao link
+  final Map<int, String> imagensDados ={
+    1: 'https://i.imgur.com/1xqPfjc.png&#39',
+    2: 'https://i.imgur.com/5ClIegB.png&#39', 
+    3: 'https://i.imgur.com/hjqY13x.png&#39',
+    4: 'https://i.imgur.com/CfJnQt0.png&#39',
+    5: 'https://i.imgur.com/6oWpSbf.png&#39', 
+    6: 'https://i.imgur.com/drgfo7s.png&#39',
+  };
+
+  /// Lógica da pontuação: verifica combinações para aplicar os multiplicadores.
+  int _calcularPontacao(List<int> lancamentos){
+    //reduce percorre toda lista somando tudo
+    final soma = lancamentos.reduce((a,b) => a +b);
+    //[4,4,1] 4 + 4 = 8 > 8 + 1 = 9 > soma = 9
+    final valoresUnicos = lancamentos.toSet().length;
+    //toSet remove repetidos
+    if(valoresUnicos == 1) { //Ex: [5,5,5]. Três iguais = 3x a soma
+      return soma * 3;
+    } else if (valoresUnicos == 2) { //Ex: [4,4,1] Dois iguais = 2x a soma
+      return soma * 2;
+    } else { // Ex: [1,3,6]. Todos diferentes = soma pura.
+      return soma;
+    }
+  }
+  //Função chamada pelo botão para lancar os dados
+  void_lancarDados(){  // eu uso o sublinhado _ significa que ela é privada, só pode ser usada
+  //dentro dessa classe
+  // comando crucial p/ forçar a atualização da tela
+    setState((){
+      _lancamentosJogador1 = List.generate(3, (_) => _aleaotorio.nextInt(6) + 1);
+      _lancamentosJogador2 = List.generate(3, (_) => _aleaotorio.nextInt(6) + 1);
+
+      final pontuacao1 = _calcularPontacao(_lancamentosJogador1);
+      final pontuacao2 = _calcularPontacao(_lancamentosJogador2);
+
+      if(pontuacao1 > pontuacao2){
+        _mensagemResultado = '${widget.nomeJogador1} venceu! ($pontuacao1 x $pontuacao2)';
+      } else if(pontuacao2 > pontuacao1){
+        _mensagemResultado = '${widget.nomeJogador2} venceu! ($pontuacao2 x $pontuacao1)'; 
+      } else {
+        _mensagemResultado = 'Empate! Joguem novamente.';
+      }
+    });
+  }
+
 }
