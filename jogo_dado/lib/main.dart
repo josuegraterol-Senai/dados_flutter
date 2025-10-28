@@ -69,17 +69,52 @@ class _EstadoTelafConfiguracoesJogadores extends State<TelaConfiguracaoJogadores
                 validator: (valor) => valor!.isEmpty ? "Digite um nome" : null,
                 //condição ? valor_se_verdadeiro : valor_se_falso
                 //Se o campo estiver vazio, mostre o texto Digite um nome.
-              )
+              ),
               const Spacer(), //Ocupar o espaço vertical disponivel,empurrando o botão p/baixo 
               //Fazer um botão para iniciar o jogo
               ElevatedButton(
-                onPressed(){
-
-                }
+                onPressed:(){
+                  //Checar se o formulario esta valido(se os campos foram preenchidos)
+                  if (_chaveFormulario.currentState!.validate()){
+                    //Navega para a próxima tela
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        //Cria a tela do jogo, PASSANDO os nomes digitados como Paramêtros.
+                        builder: (context) => TelaJogodeDados(
+                          nomeJogador1: _controladorJogador1.text,
+                          nomeJogador2: _controladorJogador2.text,
+                        )
+                      )
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+                //Botão de largura total
+                child: const Text("Inicial Jogo"),
               )
             ] ,), 
         ),
          ),
     );
   }
+}
+
+// 3. TELA PRINCIPAL DO JOGO
+
+//aqui eu vou receber os nomes como propiedades
+class TelaJogodeDados extends StatefulWidget{
+  //Variaveis finais que armazenam os nomes recebidos da tela anterior
+  final String nomeJogador1;
+  final String nomeJogador2;
+
+  const TelaJogodeDados({
+    super.key,
+    //o required garante que esses valores devem ser passados.
+    required this.nomeJogador1,
+    required this.nomeJogador2,
+  });
+
+  @override
+  State<TelaJogodeDados> createState() => _EstadoTelaJogoDeDados();
 }
