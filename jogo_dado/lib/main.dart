@@ -60,6 +60,22 @@ class _EstadoTelafConfiguracoesJogadores extends State<TelaConfiguracaoJogadores
                 validator: (valor) => valor!.isEmpty ? "Digite um nome" : null,
                 //condição ? valor_se_verdadeiro : valor_se_falso
                 //Se o campo estiver vazio, mostre o texto Digite um nome.
+              ),
+              const SizedBox(height: 16),
+              //Campo de texto para o jogador n2
+              TextFormField(
+                controller: _controladorJogador2, //liga o input ao controlador
+                decoration: const InputDecoration(labelText: "Nome Jogador 2"),
+                validator: (valor) => valor!.isEmpty ? "Digite um nome" : null,
+                //condição ? valor_se_verdadeiro : valor_se_falso
+                //Se o campo estiver vazio, mostre o texto Digite um nome.
+              )
+              const Spacer(), //Ocupar o espaço vertical disponivel,empurrando o botão p/baixo 
+              //Fazer um botão para iniciar o jogo
+              ElevatedButton(
+                onPressed(){
+
+                }
               )
             ] ,), 
         ),
