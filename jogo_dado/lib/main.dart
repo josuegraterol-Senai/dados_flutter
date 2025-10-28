@@ -34,5 +34,36 @@ class AplicativoJogodeDados extends StatelessWidget {
 class _EstadoTelafConfiguracoesJogadores extends State<TelaConfiguracaoJogadores>{
   //Chave Global para identificar e validar o widget
   //final e uma pavra dp dart para criar para uma variavel que so recebe valor uma vez
+  //FormState e o estado interno desse formulario, a a parte que sabe o que esta digitado e consegue
+  //validor os campos
   final _chaveFormulario = GlobalKey<FormState>();
+  //Controladores para pegar o texto digitado no campos
+  final TextEditingController _controladorJogador1 = TextEditingController();
+  final TextEditingController _controladorJogador2 = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Configuração dos jogadores"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16), //Espacamento Interno
+        child: Form(
+          key: _chaveFormulario, //Associando a chave GlobalKey ao formulario
+          child: Column(
+            children:[
+              //Campo de texto para o jogador n1
+              TextFormField(
+                controller: _controladorJogador1, //liga o input ao controlador
+                decoration: const InputDecoration(labelText: "Nome Jogador 1"),
+                validator: (valor) => valor!.isEmpty ? "Digite um nome" : null,
+                //condição ? valor_se_verdadeiro : valor_se_falso
+                //Se o campo estiver vazio, mostre o texto Digite um nome.
+              )
+            ] ,), 
+        ),
+         ),
+    );
+  }
 }
