@@ -181,5 +181,30 @@ class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
       }
     });
   }
-
+  //declara a função que devolve um widget: recebe nome jogador, lancamentos: os 3 valores do dado
+  Widget _construirColunajogador(String nome, List<int> lancamentos){
+    return Expanded( //pega todo o espaço disponivél dentro de um row ou column
+      child:Column(
+        children: [
+          Text(nome, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center, //é o justify-content:center do css
+            children: lancamentos.map((valor){
+              //map transforma o número do dado em um widget de imagem
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.network(
+                  imagensDados[valor]!, //Pega do mapa usando o 'valor' do dado
+                  width: 50,
+                  height: 50,
+                  errorBuilder: (context, erro, StackTrace) =>
+                  const icon(Icons.error, size: 40),
+                ),
+              )
+            }),
+          )
+        ],
+      )
+    )
+  }
 }
