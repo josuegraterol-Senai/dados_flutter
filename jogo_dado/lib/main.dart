@@ -162,7 +162,7 @@ class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
     }
   }
   //Função chamada pelo botão para lancar os dados
-  void_lancarDados(){  // eu uso o sublinhado _ significa que ela é privada, só pode ser usada
+  void _lancarDados(){  // eu uso o sublinhado _ significa que ela é privada, só pode ser usada
   //dentro dessa classe
   // comando crucial p/ forçar a atualização da tela
     setState((){
@@ -186,7 +186,9 @@ class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
     return Expanded( //pega todo o espaço disponivél dentro de um row ou column
       child:Column(
         children: [
-          Text(nome, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            nome,
+             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center, //é o justify-content:center do css
             children: lancamentos.map((valor){
@@ -201,10 +203,38 @@ class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
                   const Icon(Icons.error, size: 40),
                 ),
               );
-            }).toList(),
+            }).toList(), //convere o resultado de volta para uma lista de widgets
           )
         ],
       )
-    )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(title: const Text('jogo de Dados')),
+      body: Column(
+        children: [
+          Row(
+            children: [
+              _construirColunajogador(widget.nomeJogador1, _lancamentosJogador1),
+              _construirColunajogador(widget.nomeJogador2, _lancamentosJogador2),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            _mensagemResultado,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(), //Empurra o botão para a parte debaixo da tela.
+          ElevatedButton(onPressed: _lancarDados,
+          style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+          child: const Text('Jogar Dados'),
+          )
+        ],
+      )
+    );
   }
 }
