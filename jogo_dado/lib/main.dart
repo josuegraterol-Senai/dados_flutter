@@ -198,10 +198,10 @@ class _EstadoTelaJogoDeDados extends State<TelaJogodeDados>{
                   width: 50,
                   height: 50,
                   errorBuilder: (context, erro, StackTrace) =>
-                  const icon(Icons.error, size: 40),
+                  const Icon(Icons.error, size: 40),
                 ),
-              )
-            }),
+              );
+            }).toList(),
           )
         ],
       )
